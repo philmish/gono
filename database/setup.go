@@ -22,6 +22,22 @@ func makeMigration(db *gorm.DB) error {
     if err != nil {
         return err
     }
+    err = db.AutoMigrate(&models.Text{})
+    if err != nil {
+        return err
+    }
+    err = db.AutoMigrate(&models.ListItem{})
+    if err != nil {
+        return err
+    }
+    err = db.AutoMigrate(&models.List{})
+    if err != nil {
+        return err
+    }
+    err = db.AutoMigrate(&models.Image{})
+    if err != nil {
+        return err
+    }
     return nil
 }
 
