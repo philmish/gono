@@ -7,4 +7,5 @@ import (
 type Note struct {
     gorm.Model
     Content string `gorm:"column:content;type:varchar(500)"`
+    SubtopicID int `gorm:"column:subtopic"`
 }

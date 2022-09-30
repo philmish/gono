@@ -2,20 +2,32 @@ package database
 
 import (
     "gorm.io/gorm"
+    "github.com/philmish/gono/database/models"
 )
 
 func makeMigration(db *gorm.DB) error {
-    //TODO Create migration func
-    return nil
-}
-
-func InitDB(conn gorm.Dialector, migrate bool) error {
-    db, err := gorm.Open(conn, &gorm.Config{})
+    err := db.AutoMigrate(&models.Project{})
     if err != nil {
         return err
     }
+    err = db.AutoMigrate(&models.Topic{})
+    if err != nil {
+        return err
+    }
+    err = db.AutoMigrate(&models.Subtopic{})
+    if err != nil {
+        return err
+    }
+    err = db.AutoMigrate(&models.Note{})
+    if err != nil {
+        return err
+    }
+    return nil
+}
+
+func InitDB(conn *gorm.DB, migrate bool) error {
     if migrate {
-        err = makeMigration(db)
+        err := makeMigration(conn)
         if err != nil {
             return err
         }

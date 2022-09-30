@@ -6,10 +6,9 @@ type Subtopic struct {
     gorm.Model
     Name string `gorm:"column:name;type:varchar(100)"`
     TopicID int `gorm:"column:topic"`
-    Topic Topic `gorm:"foreignkey:TopicID"`
-    Notes []Note `gorm:"foreignkey:SubtopicID"`
-    Texts []Text `gorm:"foreignkey:SubtopicID"`
-    Links []Link `gorm:"foreignkey:SubtopicID"`
-    Lists []List `gorm:"foreignkey:SubtopicID"`
-    Images []Image `gorm:"foreignkey:SubtopicID"`
+    Notes []Note `gorm:"foreignKey:SubtopicID;references:ID"`
+    Texts []Text `gorm:"foreignKey:SubtopicID;references:ID"`
+    Links []Link `gorm:"foreignKey:SubtopicID;references:ID"`
+    Lists []List `gorm:"foreignKey:SubtopicID;references:ID"`
+    Images []Image `gorm:"foreignKey:SubtopicID;references:ID"`
 }
