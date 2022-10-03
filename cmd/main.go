@@ -32,6 +32,10 @@ func setupEnv(env string) error {
         if err != nil {
             return err
         }
+        err = os.Setenv("GONO_DBDSN", "test.db")
+        if err != nil {
+            return err
+        }
         db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
         if err != nil {
             return err

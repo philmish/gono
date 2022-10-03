@@ -4,8 +4,8 @@ import "gorm.io/gorm"
 
 type Project struct {
     gorm.Model
-    Name string `gorm:"column:name;type:varchar(100)"`
-    Topics []Topic `gorm:"foreignkey:ProjectID"`
+    Name string `gorm:"column:name;type:varchar(100)" json:"name"`
+    Topics []Topic `gorm:"foreignkey:ProjectID" json:"topics"`
 }
 
 func CreateProject(name string, db *gorm.DB) error {
@@ -15,4 +15,10 @@ func CreateProject(name string, db *gorm.DB) error {
     }
     err := db.Create(&project).Error
     return err
+}
+
+func GetAll(db *gorm.DB) ([]Project, error) {
+    var res []Project
+    err := db.Find(&res).Error
+    return res, err
 }

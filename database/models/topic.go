@@ -4,11 +4,11 @@ import "gorm.io/gorm"
 
 type Topic struct {
     gorm.Model
-    Name string `gorm:"column:name;type:varchar(100)"`
-    Description string `gorm:"column:description;type:varchar(1000)"`
-    ProjectID int `gorm:"column:project"`
-    Project Project `gorm:"foreignkKey:ProjectID"`
-    Subtopics []Subtopic `gorm:"foreignKey:TopicID;references:ID"`
+    Name string `gorm:"column:name;type:varchar(100)" json:"name"`
+    Description string `gorm:"column:description;type:varchar(1000)" json:"description"`
+    ProjectID int `gorm:"column:project" json:"projectID"`
+    Project Project `gorm:"foreignkKey:ProjectID" json:"project"`
+    Subtopics []Subtopic `gorm:"foreignKey:TopicID;references:ID" json:"subtopics"`
 }
 
 func CreateTopic(name, desc string, prid int, db *gorm.DB) error {

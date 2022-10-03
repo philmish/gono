@@ -13,6 +13,7 @@ func NewRouter() Router {
 
     api := r.engine.Group("/api")
     r.PingRoutes(api)
+    r.ProjectsRoutes(api)
 
     return r
 }
