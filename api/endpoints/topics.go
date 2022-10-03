@@ -13,6 +13,7 @@ import (
 func (r Router)TopicRoutes(rg *gin.RouterGroup) {
     topics := rg.Group("/topics")
 
+    topics.GET("/", getAllTopics)
     topics.POST("/", createTopic)
 }
 
@@ -46,4 +47,18 @@ func createTopic(c *gin.Context) {
     c.JSON(http.StatusCreated, gin.H{
         "status": "created",
     })
+}
+
+func getAllTopics(c *gin.Context) {
+    db, err := database.GetDB()
+    if err != nil {
+        c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+        return
+    }
+    topics, err := models.GetAllTopics(db)
+    if err != nil {
+        c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+        return
+    }
+    c.JSON(http.StatusOK, topics)
 }
