@@ -1,6 +1,8 @@
 package models
 
-import "gorm.io/gorm"
+import (
+	"gorm.io/gorm"
+)
 
 type Topic struct {
     gorm.Model
@@ -24,5 +26,11 @@ func CreateTopic(name, desc string, prid int, db *gorm.DB) error {
 func GetAllTopics(db *gorm.DB) ([]Topic, error) {
     var res []Topic
     err := db.Preload("Subtopics").Find(&res).Error
+    return res, err
+}
+
+func TopicByID(id int, db *gorm.DB) (Topic, error) {
+    var res Topic
+    err := db.Preload("Subtopics").First(&res, id).Error
     return res, err
 }

@@ -1,8 +1,9 @@
 package endpoints
 
 import (
-    "fmt"
-    "net/http"
+	"fmt"
+	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/philmish/gono/database"
@@ -15,6 +16,7 @@ func (r Router)TopicRoutes(rg *gin.RouterGroup) {
 
     topics.GET("/", getAllTopics)
     topics.POST("/", createTopic)
+    topics.GET("/:id", topicByID)
 }
 
 type CreateTopicReq struct {
@@ -61,4 +63,29 @@ func getAllTopics(c *gin.Context) {
         return
     }
     c.JSON(http.StatusOK, topics)
+}
+
+func topicByID(c *gin.Context) {
+    id, err := strconv.Atoi(c.Param("id"))
+    if err != nil {
+        msg := fmt.Sprintf("Failed to convert id to int: %s\n", c.Param("id"))
+        c.JSON(http.StatusBadRequest, gin.H{
+            "error": msg,
+        })
+        return
+    }
+    db, err := database.GetDB()
+    if err != nil {
+        c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+        return
+    }
+    topic, err := models.TopicByID(id, db)
+    if err != nil {
+        msg := fmt.Sprintf("Failed to fetch Topic with id %d\n%s", id, err.Error())
+        c.JSON(http.StatusBadRequest, gin.H{
+            "error": msg,
+        })
+        return
+    }
+    c.JSON(http.StatusOK, topic)
 }
