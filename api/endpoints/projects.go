@@ -3,6 +3,7 @@ package endpoints
 import (
 	"fmt"
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/philmish/gono/database"
@@ -14,6 +15,7 @@ func (r Router)ProjectsRoutes(rg *gin.RouterGroup) {
 
     projects.GET("/", allProjects)
     projects.POST("/", createProject)
+    projects.GET("/:id", projectByID)
 
 }
 
@@ -23,7 +25,7 @@ func allProjects(c *gin.Context) {
         c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
         return
     }
-    projects, err := models.GetAll(db)
+    projects, err := models.GetAllProjects(db)
     if err != nil {
         c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
         return
@@ -57,5 +59,30 @@ func createProject(c *gin.Context) {
     c.JSON(http.StatusCreated, gin.H{
         "status": "created",
     })
+}
+
+func projectByID(c *gin.Context) {
+    id, err := strconv.Atoi(c.Param("id"))
+    if err != nil {
+        msg := fmt.Sprintf("Failed to convert id to int: %s\n", c.Param("id"))
+        c.JSON(http.StatusBadRequest, gin.H{
+            "error": msg,
+        })
+        return
+    }
+    db, err := database.GetDB()
+    if err != nil {
+        c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+        return
+    }
+    project, err := models.ProjectByID(id, db)
+    if err != nil {
+        msg := fmt.Sprintf("Failed to fetch project with id %d\n", id)
+        c.JSON(http.StatusBadRequest, gin.H{
+            "error": msg,
+        })
+        return
+    }
+    c.JSON(http.StatusOK, project)
 }
 

@@ -17,8 +17,14 @@ func CreateProject(name string, db *gorm.DB) error {
     return err
 }
 
-func GetAll(db *gorm.DB) ([]Project, error) {
+func GetAllProjects(db *gorm.DB) ([]Project, error) {
     var res []Project
     err := db.Find(&res).Error
+    return res, err
+}
+
+func ProjectByID(id int, db *gorm.DB) (Project, error) {
+    var res Project
+    err := db.First(&res, id).Error
     return res, err
 }
