@@ -19,7 +19,7 @@ func CreateProject(name string, db *gorm.DB) error {
 
 func GetAllProjects(db *gorm.DB) ([]Project, error) {
     var res []Project
-    err := db.Find(&res).Error
+    err := db.Preload("Topics").Find(&res).Error
     return res, err
 }
 
