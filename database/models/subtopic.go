@@ -14,20 +14,27 @@ type Subtopic struct {
 }
 
 func CreateSubtopic(name string, toid int, db *gorm.DB) error {
-    var topic Topic
-    err := db.First(&topic, toid).Error
-    if err != nil {
-        return err
-    }
     subtopic := Subtopic{
         Name: name,
-        TopicID: int(topic.ID),
+        TopicID: toid,
         Notes: []Note{},
         Texts: []Text{},
         Links: []Link{},
         Lists: []List{},
         Images: []Image{},
     }
-    err = db.Create(&subtopic).Error
+    err := db.Create(&subtopic).Error
     return err
+}
+
+func GetAllSubtopics(db *gorm.DB) ([]Subtopic, error) {
+    var res []Subtopic
+    err := db.Preload("Notes").Preload("Texts").Preload("Links").Preload("Lists").Preload("Images").Find(&res).Error
+    return res, err
+}
+
+func SubtopicByID(id int, db *gorm.DB) (Subtopic, error) {
+    var res Subtopic
+    err := db.Preload("Notes").Preload("Texts").Preload("Links").Preload("Lists").Preload("Images").First(&res, id).Error
+    return res, err
 }

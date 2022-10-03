@@ -15,6 +15,7 @@ func NewRouter() Router {
     r.PingRoutes(api)
     r.ProjectsRoutes(api)
     r.TopicRoutes(api)
+    r.SubtopicRoutes(api)
 
     return r
 }
