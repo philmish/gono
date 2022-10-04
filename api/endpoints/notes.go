@@ -3,6 +3,7 @@ package endpoints
 import (
 	"fmt"
 	"net/http"
+    "strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/philmish/gono/database"
@@ -14,6 +15,7 @@ func (r Router)NoteRoutes(rg *gin.RouterGroup) {
 
     notes.GET("/",getAllNotes)
     notes.POST("/", createNote)
+    notes.GET("/:id", getNoteByID)
 }
 
 func getAllNotes(c *gin.Context) {
@@ -58,4 +60,28 @@ func createNote(c *gin.Context) {
     c.JSON(http.StatusCreated, gin.H{
         "status": "created",
     })
+}
+
+func getNoteByID(c *gin.Context) {
+    id, err := strconv.Atoi(c.Param("id"))
+    if err != nil {
+        msg := fmt.Sprintf("Failed to convert id to int: %s\n", c.Param("id"))
+        c.JSON(http.StatusBadRequest, gin.H{
+            "error": msg,
+        })
+        return
+    }
+    db, err := database.GetDB()
+    if err != nil {
+        c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+        return
+    }
+    note, err := models.GetNoteByID(id, db)
+    if err != nil {
+        msg := fmt.Sprintf("Failed to fetch Note with ID %d\n%s\n", id, err.Error())
+        c.JSON(http.StatusBadRequest, gin.H{
+            "error": msg,
+        })
+    }
+    c.JSON(http.StatusOK, note)
 }
