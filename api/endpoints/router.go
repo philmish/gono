@@ -16,6 +16,7 @@ func NewRouter() Router {
     r.ProjectsRoutes(api)
     r.TopicRoutes(api)
     r.SubtopicRoutes(api)
+    r.NoteRoutes(api)
 
     return r
 }
