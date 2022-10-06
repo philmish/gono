@@ -20,7 +20,7 @@ var (
 
 func init() {
     env = flag.String("env", "dev", "current running mode (dev,prod)")
-    addr = flag.String("uri", ":7195", "address the server is running on")
+    addr = flag.String("uri", "0.0.0.0:7195", "address the server is running on")
     migrate = flag.Bool("m", true, "Make auto migrations for db")
 }
 
