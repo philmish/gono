@@ -6,10 +6,13 @@ services:
     image: nginx:latest
     ports:
       - "8081:8081"
+      - "8080:8080"
     volumes:
       - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - ./UI/web:/var/www/html
     links:
       - backend
+      - webui
 
   backend:
     build:
@@ -19,4 +22,13 @@ services:
       GONO_STATIC: "${GONO_STATIC}"
     volumes:
       - ./UI/static:/opt/static
+
+  webui:
+    build:
+      context: .
+      dockerfile: docker/UI/Dockerfile
+    environment:
+      GONO_API: "${GONO_API}"
+    volumes:
+      - ./UI/web:/var/www/html
 
