@@ -1,3 +1,6 @@
 docker/database/data/
+UI/web/vendor/
+.cache
+.phplint-cache
 .env
 *.db

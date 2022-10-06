@@ -1,0 +1,9 @@
+{
+    "name": "gono/webui",
+    "description": "Webui for gono",
+    "type": "project",
+    "license": "MIT",
+    "require-dev": {
+        "phpunit/phpunit": "^9"
+    }
+}
