@@ -1,6 +1,10 @@
 package endpoints
 
-import "github.com/gin-gonic/gin"
+import (
+	"os"
+
+	"github.com/gin-gonic/gin"
+)
 
 type Router struct {
     engine *gin.Engine
@@ -9,6 +13,10 @@ type Router struct {
 func NewRouter() Router {
     r := Router{
         engine: gin.Default(),
+    }
+    static := os.Getenv("GONO_STATIC")
+    if static != "" {
+        r.engine.Static("/static", static)
     }
 
     api := r.engine.Group("/api")
