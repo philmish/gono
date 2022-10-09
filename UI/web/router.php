@@ -1,5 +1,11 @@
 <?php declare(strict_types=1);
 
-echo "Hello World";
+namespace webui;
+require_once('src/autoload.php');
+
+use webui\app\App;
+
+$app = App::make();
+$app->serve("/");
 
 
