@@ -12,6 +12,7 @@ spl_autoload_register(
                 'webui\\app\\appconfiguration' => '/app/AppConfig.php',
                 'webui\\app\\components\\shared\\footer' => '/app/components/shared/Footer.php',
                 'webui\\app\\components\\shared\\head' => '/app/components/shared/Head.php',
+                'webui\\app\\components\\shared\\navbar' => '/app/components/shared/Navbar.php',
                 'webui\\app\\templates\\basetemplate' => '/app/templates/BaseTemplate.php',
                 'webui\\app\\views\\homeview' => '/app/views/HomeView.php',
                 'webui\\lib\\core\\component' => '/lib/core/Component.php',

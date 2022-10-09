@@ -9,7 +9,7 @@ final class HomeView extends BaseTemplate {
 
     protected function composeBody(?DataProvider $db, array $args = []): string {
         return <<<EOT
-            <h1>Hello World</h1>
+            <h1 class="flex-center">Hello World</h1>
         EOT;
     }
     
