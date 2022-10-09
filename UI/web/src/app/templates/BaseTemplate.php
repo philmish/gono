@@ -4,6 +4,7 @@ namespace webui\app\templates;
 
 use webui\app\components\shared\Footer;
 use webui\app\components\shared\Head;
+use webui\app\components\shared\Navbar;
 use webui\lib\core\DataProvider;
 use webui\lib\core\Template;
 
@@ -27,13 +28,21 @@ abstract class BaseTemplate implements Template {
         return $f->getHTML();
     }
 
+    private function navbar(): string {
+        $n =new Navbar();
+        return $n->getHTML();
+    }
+
     abstract protected function composeBody(?DataProvider $db, array $args = []): string;
 
     public function render(?DataProvider $db, array $args = []): void {
         $body = $this->composeBody($db, $args);
         echo <<<EOT
         {$this->head()}
-            {$body}
+            {$this->navbar()}
+            <div class="main">
+                {$body}
+            </div>
         {$this->foot()}
         EOT;
     }
